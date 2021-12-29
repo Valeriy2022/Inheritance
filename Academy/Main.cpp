@@ -220,6 +220,12 @@ public:
 		cout << topic << " " << readiness << endl;
 	}
 
+// -------------------- Methods: -------------------------------------------------------------
+	void chang_topic(const std::string& topic)
+	{
+		this->topic = topic;
+	}
+
 };
 
 void main()
@@ -235,6 +241,9 @@ void main()
 	teach.print();
 
 	Graduate grad("Conor", "Sarra", 30, "Phisic","WW_123", 81, 90, "Terminators", 99);
+	grad.print();
+
+	grad.chang_topic("Jhon");
 	grad.print();
 
 	
