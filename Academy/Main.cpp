@@ -119,6 +119,109 @@ public:
 	}
 };
 //Resharper
+//добавить классы Teacher и Graduate(Дипломник).
+class Teacher :public Human
+{
+	std::string speciality;
+	unsigned int experience;
+	double evil;
+public:
+	const std::string& get_speciality()const
+	{
+		return speciality;
+	}
+	unsigned int get_experience()const
+	{
+		return experience;
+	}
+	double get_evil()const
+	{
+		return evil;
+	}
+	void set_speciality(const std::string& speciality)
+	{
+		this->speciality = speciality;
+	}
+	void set_experience(unsigned int experience)
+	{
+		this->experience = experience;
+	}
+	void set_evil( double evil)
+	{
+		this->evil = evil;
+	}
+
+	//					Constructors:
+	Teacher
+	(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& speciality, double experience, double evil
+	) :Human(last_name, first_name, age)
+	{
+		set_speciality(speciality);
+		set_experience(experience);
+		set_evil(evil);
+		cout << "TConstructor:\t" << this << endl;
+	}
+	~Teacher()
+	{
+		cout << "TDestructor:\t" << this << endl;
+	}
+	void print()const
+	{
+		Human::print();
+		cout << speciality << " " << experience << " " << evil << endl;
+	}
+
+};
+
+class Graduate :public Student
+{
+	std::string topic;
+	double readiness;
+public:
+	const std::string& get_topic()const
+	{
+		return topic;
+	}	
+	double get_readiness()const
+	{
+		return readiness;
+	}	
+	void set_topic(const std::string& topic)
+	{
+		this->topic = topic;
+	}
+	void set_readiness( double readiness)
+	{
+		this->readiness = readiness;
+	}
+
+	//					Constructors:
+	Graduate
+	(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& speciality, const std::string& group, double rating, double attendance,
+		std::string topic, double readiness
+	) :Student(last_name, first_name, age, speciality, group, rating, attendance)
+		
+	{
+		set_topic(topic);
+		set_readiness(readiness);
+		cout << "GConstructor:\t" << this << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << this << endl;
+	}
+	void print()const
+	{
+		Student::print();
+		cout << topic << " " << readiness << endl;
+	}
+
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -127,6 +230,13 @@ void main()
 
 	Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95);
 	stud.print();
+	
+	Teacher teach("Conor", "Sarra", 30, "Phisic", 81, 90);
+	teach.print();
 
+	Graduate grad("Conor", "Sarra", 30, "Phisic","WW_123", 81, 90, "Terminators", 99);
+	grad.print();
+
+	
 }
 
