@@ -3,6 +3,9 @@
 #include<string>
 using namespace std;
 
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//����������� ��������� ������������ Human
+#define HUMAN_GIVE_PARAMETERS last_name, first_name, age
+
 class Human
 {
 	std::string last_name;
@@ -35,24 +38,27 @@ public:
 	}
 
 	//					Constructors:
-	Human(const std::string& last_name, const std::string& first_name, unsigned int age)
+	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
 		set_first_name(first_name);
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
 
 	//				Methods:
-	void print()const
+	virtual void print()const
 	{
-		cout << last_name << " " << first_name << " " << age << " ëåò" << endl;
+		cout << last_name << " " << first_name << " " << age << " ���" << endl;
 	}
 };
+
+#define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
+#define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 
 class Student :public Human
 {
@@ -95,11 +101,7 @@ public:
 	}
 
 	//					Constructors:
-	Student
-	(
-		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& speciality, const std::string& group, double rating, double attendance
-	) :Human(last_name, first_name, age)
+	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
 		set_group(group);
@@ -118,6 +120,9 @@ public:
 		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
+
+#define TEACHER_TAKE_PARAMETERS const std::string& speciality, unsigned int experience
+#define TEACHER_GIVE_PARAMETERS speciality, experience
 
 class Teacher :public Human
 {
@@ -141,12 +146,7 @@ public:
 		this->experience = experience;
 	}
 	//				Constructor
-	Teacher
-	(
-		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& speciality, unsigned int experience
-	)
-		:Human(last_name, first_name, age)
+	Teacher(HUMAN_TAKE_PARAMETERS, TEACHER_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
 		set_experience(experience);
@@ -177,10 +177,8 @@ public:
 		this->subject = subject;
 	}
 	//						Constructors:
-	Graduate(
-		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& speciality, const std::string& group, double rating, double attendance,
-		const std::string& subject) :Student(last_name, first_name, age, speciality, group, rating, attendance)
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject)
+		:Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
 		set_subject(subject);
 		cout << "GConstructor:\t" << this << endl;
@@ -198,9 +196,13 @@ public:
 };
 
 //Resharper
+
+//#define INHERITANCE_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef INHERITANCE_CHECK
 	Human human("Connor", "John", 18);
 	human.print();
 
@@ -212,4 +214,40 @@ void main()
 
 	Graduate grad("Shreder", "Hank", 40, "Cryminalistic", "WW_123", 90, 75, "How to catch Heizenberg");
 	grad.print();
+#endif // INHERITANCE_CHECK
+
+	//Polymorphism (Poly - �����, morphis - �����)
+	//Ad-Hoc Polymorphism - ���������� �������/����������
+	//Inclusion polymorphism
+	//Upcast - ���������� � �������� ����.
+
+	//int arr[] = { 3,5,8,13,21 };
+	//Generalisation (up-cast)
+	Human* group[] =	//������ �����
+	{
+		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95),
+		new Teacher("White", "Walter", 50, "Chemistry", 25),
+		new Graduate("Shreder", "Hank", 40, "Cryminalistic", "WW_123", 90, 75, "How to catch Heizenberg"),
+		new Student("Vercetti", "Tomas", 30, "City business", "Vice", 98, 99),
+		new Teacher("Diaz", "Ricardo", 55, "Weapons distribution", 30),
+		new Student("Montana", "Antonio", 30, "Cryminalistic", "Vice", 90, 80)
+	};
+
+	//�������� sizeof() ���������� ������ � ������.
+	cout << sizeof(group)/*/sizeof(Human*)*/ << endl;	//��������� ������ ������� � ���������
+
+	//Specialisation - ��������� (Down-cast - ���������� �� �������� ���� � ���������)
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		cout << typeid(*group[i]).name() << endl;//TRRI - Runtime Type Information
+		//http://cplusplus.com/doc/tutorial/typecasting/
+		group[i]->print();
+		cout << "\n-----------------------------------------------\n";
+	}
+
+	////////////////////////////////////////
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+	}
 }
