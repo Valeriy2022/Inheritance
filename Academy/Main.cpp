@@ -50,7 +50,7 @@ public:
 	//				Methods:
 	void print()const
 	{
-		cout << last_name << " " << first_name << " " << age << " ���" << endl;
+		cout << last_name << " " << first_name << " " << age << " ëåò" << endl;
 	}
 };
 
@@ -118,6 +118,85 @@ public:
 		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
+
+class Teacher :public Human
+{
+	std::string speciality;
+	unsigned int experience;
+public:
+	const std::string& get_speciality()const
+	{
+		return speciality;
+	}
+	unsigned int get_experience()const
+	{
+		return experience;
+	}
+	void set_speciality(const std::string& speciality)
+	{
+		this->speciality = speciality;
+	}
+	void set_experience(unsigned int experience)
+	{
+		this->experience = experience;
+	}
+	//				Constructor
+	Teacher
+	(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& speciality, unsigned int experience
+	)
+		:Human(last_name, first_name, age)
+	{
+		set_speciality(speciality);
+		set_experience(experience);
+		cout << "TConstructor:\t" << this << endl;
+	}
+	~Teacher()
+	{
+		cout << "TDestructor:\t" << this << endl;
+	}
+	//					Methods
+	void print()const
+	{
+		Human::print();
+		cout << speciality << " " << experience << endl;
+	}
+};
+
+class Graduate :public Student
+{
+	std::string subject;
+public:
+	const std::string& get_subject()const
+	{
+		return subject;
+	}
+	void set_subject(const std::string& subject)
+	{
+		this->subject = subject;
+	}
+	//						Constructors:
+	Graduate(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& speciality, const std::string& group, double rating, double attendance,
+		const std::string& subject) :Student(last_name, first_name, age, speciality, group, rating, attendance)
+	{
+		set_subject(subject);
+		cout << "GConstructor:\t" << this << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << this << endl;
+	}
+	//						Methods:
+	void print()const
+	{
+		Student::print();
+		cout << subject << endl;
+	}
+};
+
 //Resharper
 void main()
 {
@@ -128,5 +207,9 @@ void main()
 	Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95);
 	stud.print();
 
-}
+	Teacher teacher("White", "Walter", 50, "Chemistry", 25);
+	teacher.print();
 
+	Graduate grad("Shreder", "Hank", 40, "Cryminalistic", "WW_123", 90, 75, "How to catch Heizenberg");
+	grad.print();
+}
