@@ -214,15 +214,8 @@ void main()
 
 	Graduate grad("Shreder", "Hank", 40, "Cryminalistic", "WW_123", 90, 75, "How to catch Heizenberg");
 	grad.print();
-#endif // INHERITANCE_CHECK
-
-	//Polymorphism (Poly - �����, morphis - �����)
-	//Ad-Hoc Polymorphism - ���������� �������/����������
-	//Inclusion polymorphism
-	//Upcast - ���������� � �������� ����.
-
-	//int arr[] = { 3,5,8,13,21 };
-	//Generalisation (up-cast)
+#endif // INHERITANCE_CHECK	
+	
 	Human* group[] =	//������ �����
 	{
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95),
@@ -251,3 +244,12 @@ void main()
 		delete group[i];
 	}
 }
+
+//1. * Сохранить группу в файл;
+//2. * **Загрузить группу из файла;
+//http://cplusplus.com/doc/tutorial/files/
+//3.Есть 2 типа сотрудников - с постоянной оплатой и с почасовой оплатой.
+//Нужно создать массив разнотипных сотрудников,
+//и вычислить зарплату для каждого отдельного струдника, и для всего отдела.
+//Можно сохранить сотдуников в файл и загрузить их из файла.
+//Реализовать в отдельном проекте.
