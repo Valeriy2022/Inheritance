@@ -133,8 +133,8 @@ public:
 
 class HourlyEmployee :public Employee
 {
-	double rate;	//����� (������ �� 1 ���)
-	int hours;		//���������� ������������ �����
+	double rate;	
+	int hours;		
 public:
 	double get_rate()const
 	{
@@ -173,16 +173,16 @@ public:
 	void print()const
 	{
 		Employee::print();
-		cout << " �����:" << rate << ",����������:" << hours << " �����:" << get_salary();
+		cout << " Ставка:" << rate << ",Оплата за час:" << hours << " Итого:" << get_salary();
 		cout << endl;
 	}
 };
 
 void main()
 {
-	std::string str = "Hello";
+	/*std::string str = "Hello";
 	cout << str.c_str()[1] << endl;;
-	cout << typeid(str.c_str()).name() << endl;
+	cout << typeid(str.c_str()).name() << endl;*/
 
 	setlocale(LC_ALL, "");
 	Employee* department[] =
@@ -192,9 +192,7 @@ void main()
 		new HourlyEmployee("Vercetty", "Tomas", 30, "Security", 500, 8)
 	};
 
-	double total_salary = 0;	//����� ��������
-	//sizeof(department) / sizeof(Employee*) - ����� ������ ������� � ������ �� ������ ������ ���������,
-	//� ����� ������� �������� ������ ������� � ���������.
+	double total_salary = 0;	
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
 	{
 		cout << "\n--------------------------------------\n";
@@ -202,7 +200,7 @@ void main()
 		total_salary += department[i]->get_salary();
 	}
 	cout << "\n--------------------------------------\n";
-	cout << "����� �������� ����� ������: " << total_salary << endl;
+	cout << "Итого общая зарплата отдела: " << total_salary << endl;
 	cout << "\n--------------------------------------\n";
 
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
