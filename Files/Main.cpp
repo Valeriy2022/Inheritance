@@ -1,8 +1,8 @@
-п»ї#include<iostream>
+#include<iostream>
 #include<string>
 using namespace std;
 
-#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Human
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//Принимаемые переметры конструктора Human
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 
 class Human
@@ -52,16 +52,16 @@ public:
 	//				Methods:
 	virtual void print()const
 	{
-		cout << last_name << " " << first_name << " " << age << " пїЅпїЅпїЅ" << endl;
+		cout << last_name << " " << first_name << " " << age << " лет" << endl;
 	}
 };
 
 #define EMPLOYEE_TAKE_PARAMETERS	const std::string& position
 #define EMPLOYEE_GIVE_PARAMETERS	position
 
-class Employee :public Human	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+class Employee :public Human	//Наследование
 {
-	std::string position;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	std::string position;	//Должность
 public:
 	const std::string& get_position()const
 	{
@@ -73,7 +73,7 @@ public:
 	}
 	virtual double get_salary()const = 0;
 
-	Employee(HUMAN_TAKE_PARAMETERS, EMPLOYEE_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	Employee(HUMAN_TAKE_PARAMETERS, EMPLOYEE_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)//Делегирование
 	{
 		set_position(position);
 		cout << "EConstructor:\t" << this << endl;
@@ -96,7 +96,7 @@ public:
 
 class PermanentEmployee : public Employee
 {
-	double salary;	
+	double salary;	//Зарплата
 public:
 	double get_salary()const
 	{
@@ -133,8 +133,8 @@ public:
 
 class HourlyEmployee :public Employee
 {
-	double rate;	
-	int hours;		
+	double rate;	//Тариф (ставка за 1 час)
+	int hours;		//Количество отработанных часов
 public:
 	double get_rate()const
 	{
@@ -173,7 +173,7 @@ public:
 	void print()const
 	{
 		Employee::print();
-		cout << " РЎС‚Р°РІРєР°:" << rate << ",РћРїР»Р°С‚Р° Р·Р° С‡Р°СЃ:" << hours << " РС‚РѕРіРѕ:" << get_salary();
+		cout << " тариф:" << rate << ",отработано:" << hours << " итого:" << get_salary();
 		cout << endl;
 	}
 };
@@ -192,7 +192,9 @@ void main()
 		new HourlyEmployee("Vercetty", "Tomas", 30, "Security", 500, 8)
 	};
 
-	double total_salary = 0;	
+	double total_salary = 0;	//Общая зарплата
+	//sizeof(department) / sizeof(Employee*) - Делим размер массива в Байтах на размер одного указателя,
+	//и таким образом получаем размер массива в элементах.
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
 	{
 		cout << "\n--------------------------------------\n";
@@ -200,7 +202,7 @@ void main()
 		total_salary += department[i]->get_salary();
 	}
 	cout << "\n--------------------------------------\n";
-	cout << "РС‚РѕРіРѕ РѕР±С‰Р°СЏ Р·Р°СЂРїР»Р°С‚Р° РѕС‚РґРµР»Р°: " << total_salary << endl;
+	cout << "Общая зарплата всего отдела: " << total_salary << endl;
 	cout << "\n--------------------------------------\n";
 
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
