@@ -1,6 +1,10 @@
 ﻿#include<iostream>
+#include<fstream>
 #include<string>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;;
 
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//����������� ��������� ������������ Human
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
@@ -14,6 +18,7 @@ public:
 	const std::string& get_last_name()const
 	{
 		return last_name;
+		last_name.length();
 	}
 	const std::string& get_first_name()const
 	{
@@ -50,11 +55,23 @@ public:
 	}
 
 	//				Methods:
-	virtual void print()const
+	virtual ostream& print(ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age << " ���" << endl;
+		//return os << last_name << " " << first_name << " " << age << " ���";
+		os << left;
+		os.width(10);
+		os << last_name;
+		os.width(10);
+		os << first_name;
+		os.width(3);
+		os << age << " ���";
+		return os;
 	}
 };
+ostream& operator<<(ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 #define EMPLOYEE_TAKE_PARAMETERS	const std::string& position
 #define EMPLOYEE_GIVE_PARAMETERS	position
@@ -83,11 +100,10 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		cout << position;
-		cout << endl;
+		Human::print(os) << " ";	//�������� print() �� ������ Human
+		return os << position;
 	}
 };
 
@@ -96,7 +112,7 @@ public:
 
 class PermanentEmployee : public Employee
 {
-	double salary;	
+	double salary;	//��������
 public:
 	double get_salary()const
 	{
@@ -120,11 +136,10 @@ public:
 		cout << "PEDestructor:\t" << this << endl;
 	}
 
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Employee::print();
-		cout << salary;
-		cout << endl;
+		Employee::print(os) << " ";
+		return os << salary;
 	}
 };
 
@@ -133,8 +148,8 @@ public:
 
 class HourlyEmployee :public Employee
 {
-	double rate;	
-	int hours;		
+	double rate;	//����� (������ �� 1 ���)
+	int hours;		//���������� ������������ �����
 public:
 	double get_rate()const
 	{
@@ -170,11 +185,10 @@ public:
 	{
 		cout << "HEDestructor:\t" << this << endl;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Employee::print();
-		cout << " Ставка:" << rate << ",Оплата за час:" << hours << " Итого:" << get_salary();
-		cout << endl;
+		Employee::print(os) << " ";
+		return os << " �����:" << rate << ", ����������:" << hours << ", �����:" << get_salary();
 	}
 };
 
@@ -192,16 +206,29 @@ void main()
 		new HourlyEmployee("Vercetty", "Tomas", 30, "Security", 500, 8)
 	};
 
-	double total_salary = 0;	
+	double total_salary = 0;	//����� ��������
+	//sizeof(department) / sizeof(Employee*) - ����� ������ ������� � ������ �� ������ ������ ���������,
+	//� ����� ������� �������� ������ ������� � ���������.
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
 	{
 		cout << "\n--------------------------------------\n";
-		department[i]->print();
+		//department[i]->print();
+		cout << *department[i] << endl;
 		total_salary += department[i]->get_salary();
 	}
 	cout << "\n--------------------------------------\n";
-	cout << "Итого общая зарплата отдела: " << total_salary << endl;
+	cout << "����� �������� ����� ������: " << total_salary << endl;
 	cout << "\n--------------------------------------\n";
+
+	ofstream fout("file.txt");
+	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
+	{
+		fout.width(25);
+		fout << left;
+		fout << string(typeid(*department[i]).name()) + ":" << *department[i] << endl;
+	}
+	fout.close();
+	system("start notepad file.txt");
 
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
 	{
