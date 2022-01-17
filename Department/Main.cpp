@@ -6,7 +6,7 @@ using std::cin;
 using std::cout;
 using std::endl;;
 
-#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//����������� ��������� ������������ Human
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//Принимаемые переметры конструктора Human
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 
 class Human
@@ -57,28 +57,57 @@ public:
 	//				Methods:
 	virtual ostream& print(ostream& os)const
 	{
-		//return os << last_name << " " << first_name << " " << age << " ���";
+		//return os << last_name << " " << first_name << " " << age << " лет";
+		os << left;		//Задает выравнивание выводимой информации в поле определенной ширины
+		os.width(10);	//Определяет ширину поля, в которое будет произведен вывод. 
+						//Ширина измеряется в знакопозициях.
+		//width - метод класса ios_base
+		//left - манипулятор (как endl), который задает выравнивание
+
+		os << last_name;
+		os.width(10);
+		os << first_name;
+		os.width(3);
+		os << age << " лет";
+		return os;
+	}
+	virtual ofstream& print(ofstream& os)const
+	{
+		//return os << last_name << " " << first_name << " " << age << " лет";
 		os << left;
 		os.width(10);
 		os << last_name;
 		os.width(10);
 		os << first_name;
 		os.width(3);
-		os << age << " ���";
+		os << age;
 		return os;
+	}
+	virtual ifstream& scan(ifstream& is)
+	{
+		is >> last_name >> first_name >> age;
+		return is;
 	}
 };
 ostream& operator<<(ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
+ofstream& operator<<(ofstream& os, const Human& obj)
+{
+	return obj.print(os);
+}
+ifstream& operator>>(ifstream& is, Human& obj)
+{
+	return obj.scan(is);
+}
 
 #define EMPLOYEE_TAKE_PARAMETERS	const std::string& position
 #define EMPLOYEE_GIVE_PARAMETERS	position
 
-class Employee :public Human	//������������
+class Employee :public Human	//Наследование
 {
-	std::string position;	//���������
+	std::string position;	//Должность
 public:
 	const std::string& get_position()const
 	{
@@ -90,7 +119,7 @@ public:
 	}
 	virtual double get_salary()const = 0;
 
-	Employee(HUMAN_TAKE_PARAMETERS, EMPLOYEE_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)//�������������
+	Employee(HUMAN_TAKE_PARAMETERS, EMPLOYEE_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)//Делегирование
 	{
 		set_position(position);
 		cout << "EConstructor:\t" << this << endl;
@@ -102,11 +131,22 @@ public:
 
 	std::ostream& print(std::ostream& os)const
 	{
-		Human::print(os) << " ";	//�������� print() �� ������ Human
-		os << left;
+		Human::print(os) << " ";	//Вызываем print() из класса Human
 		os.width(10);
-		os << position;		
+		return os << position;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		Human::print(os) << " ";	//Вызываем print() из класса Human
+		os.width(10);
+		os << position;
 		return os;
+	}
+	ifstream& scan(ifstream& is)
+	{
+		Human::scan(is);
+		is >> position;
+		return is;
 	}
 };
 
@@ -115,7 +155,7 @@ public:
 
 class PermanentEmployee : public Employee
 {
-	double salary;	//��������
+	double salary;	//Зарплата
 public:
 	double get_salary()const
 	{
@@ -142,10 +182,21 @@ public:
 	std::ostream& print(std::ostream& os)const
 	{
 		Employee::print(os) << " ";
-		os << left;
+		return os << salary;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		Employee::print(os) << " ";
 		os.width(10);
+		os << right;
 		os << salary;
 		return os;
+	}
+	ifstream& scan(ifstream& is)
+	{
+		Employee::scan(is);
+		is >> salary;
+		return is;
 	}
 };
 
@@ -154,8 +205,8 @@ public:
 
 class HourlyEmployee :public Employee
 {
-	double rate;	//����� (������ �� 1 ���)
-	int hours;		//���������� ������������ �����
+	double rate;	//Тариф (ставка за 1 час)
+	int hours;		//Количество отработанных часов
 public:
 	double get_rate()const
 	{
@@ -194,20 +245,52 @@ public:
 	std::ostream& print(std::ostream& os)const
 	{
 		Employee::print(os) << " ";
-		os << left;
+		os << "тариф:";
+		os.width(5);
+		os << right;
+		os << rate;
+		os << ", отработано:";
+		os.width(3);
+		os << hours << ", итого:" << get_salary();
+
+		return os;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		Employee::print(os) << " ";
 		os.width(10);
-		os << "Ставка:" << rate << ", Время:" << hours << ", Оплата:" << get_salary();
-		return os ;
+		os << right;
+		os << rate;
+		os.width(3);
+		os << hours;
+
+		return os;
+	}
+	ifstream& scan(ifstream& is)
+	{
+		Employee::scan(is);
+		is >> rate >> hours;
+		return is;
 	}
 };
 
+Employee* EmployeeFactory(const string& type)
+{
+	if (type.find("PermanentEmployee") != std::string::npos)return new PermanentEmployee("", "", 0, "", 0);
+	if (type.find("HourlyEmployee") != std::string::npos)return new HourlyEmployee("", "", 0, "", 0, 0);
+}
+
+//#define SAVE_TO_FILE
+
 void main()
 {
+	setlocale(LC_ALL, "");
+
+#ifdef SAVE_TO_FILE
 	std::string str = "Hello";
 	cout << str.c_str()[1] << endl;;
 	cout << typeid(str.c_str()).name() << endl;
 
-	setlocale(LC_ALL, "");
 	Employee* department[] =
 	{
 		new PermanentEmployee("Rosenberg", "Ken", 30, "Lawyer", 2000),
@@ -215,9 +298,9 @@ void main()
 		new HourlyEmployee("Vercetty", "Tomas", 30, "Security", 500, 8)
 	};
 
-	double total_salary = 0;	//����� ��������
-	//sizeof(department) / sizeof(Employee*) - ����� ������ ������� � ������ �� ������ ������ ���������,
-	//� ����� ������� �������� ������ ������� � ���������.
+	double total_salary = 0;	//Общая зарплата
+	//sizeof(department) / sizeof(Employee*) - Делим размер массива в Байтах на размер одного указателя,
+	//и таким образом получаем размер массива в элементах.
 	for (int i = 0; i < sizeof(department) / sizeof(Employee*); i++)
 	{
 		cout << "\n--------------------------------------\n";
@@ -226,7 +309,7 @@ void main()
 		total_salary += department[i]->get_salary();
 	}
 	cout << "\n--------------------------------------\n";
-	cout << "����� �������� ����� ������: " << total_salary << endl;
+	cout << "Общая зарплата всего отдела: " << total_salary << endl;
 	cout << "\n--------------------------------------\n";
 
 	ofstream fout("file.txt");
@@ -234,7 +317,8 @@ void main()
 	{
 		fout.width(25);
 		fout << left;
-		fout << string(typeid(*department[i]).name()) + ":" << *department[i] << endl;
+		fout << string(typeid(*department[i]).name()) + ":";
+		fout << *department[i] << endl;
 	}
 	fout.close();
 	system("start notepad file.txt");
@@ -243,11 +327,55 @@ void main()
 	{
 		delete department[i];
 	}
-}
+#endif // SAVE_TO_FILE
 
-//TODO:
-//1. При помощи width() и left / right выровнять вывод во всех дочерних классах;
-//2. Обеспечить ввод объектов PermanentEmployee и HourlyEmployee с клавиатуры;
-//PermanentEmployee pe;
-//cout << "Введите информацию о сотруднике: ";
-//cin >> pe;
+
+	Employee** department = nullptr;
+	int n = 0;	//Размер массива
+
+	ifstream fin("file.txt");
+
+	if (fin.is_open())
+	{
+		//cout << fin.tellg() << endl;
+		//1) Определяем количество записей в файле, для того, чтобы выделить память под сотрудников
+		string employee_type;
+		for (; !fin.eof(); n++)
+		{
+			std::getline(fin, employee_type);
+		}
+		n--;
+		cout << n << endl;
+		//2) Выделяем память под массив:
+		department = new Employee * [n] {};
+		//3) Возвращаем курсор в начало файла:
+		cout << fin.tellg() << endl;
+		fin.clear();	//Очищаем поток
+		fin.seekg(0);	//Задаем расположение курсора
+		cout << fin.tellg() << endl;
+
+		//4) Загружаем данные из файла в массив:
+		for (int i = 0; i < n; i++)
+		{
+			getline(fin, employee_type, ':');
+			department[i] = EmployeeFactory(employee_type);
+			fin >> *department[i];
+		}
+	}
+	else
+	{
+		cerr << "Error: file not found" << endl;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << *department[i] << endl;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		delete department[i];
+	}
+	delete[] department;
+	fin.close();
+}
