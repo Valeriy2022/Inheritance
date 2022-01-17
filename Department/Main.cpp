@@ -235,3 +235,10 @@ void main()
 		delete department[i];
 	}
 }
+
+//TODO:
+//1. При помощи width() и left / right выровнять вывод во всех дочерних классах;
+//2. Обеспечить ввод объектов PermanentEmployee и HourlyEmployee с клавиатуры;
+//PermanentEmployee pe;
+//cout << "Введите информацию о сотруднике: ";
+//cin >> pe;
