@@ -103,7 +103,10 @@ public:
 	std::ostream& print(std::ostream& os)const
 	{
 		Human::print(os) << " ";	//�������� print() �� ������ Human
-		return os << position;
+		os << left;
+		os.width(10);
+		os << position;		
+		return os;
 	}
 };
 
@@ -139,7 +142,10 @@ public:
 	std::ostream& print(std::ostream& os)const
 	{
 		Employee::print(os) << " ";
-		return os << salary;
+		os << left;
+		os.width(10);
+		os << salary;
+		return os;
 	}
 };
 
@@ -188,7 +194,10 @@ public:
 	std::ostream& print(std::ostream& os)const
 	{
 		Employee::print(os) << " ";
-		return os << " �����:" << rate << ", ����������:" << hours << ", �����:" << get_salary();
+		os << left;
+		os.width(10);
+		os << "Ставка:" << rate << ", Время:" << hours << ", Оплата:" << get_salary();
+		return os ;
 	}
 };
 
