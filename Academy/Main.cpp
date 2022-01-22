@@ -42,6 +42,13 @@ public:
 	}
 
 	//					Constructors:
+	Human()
+	{
+		set_last_name("");
+		set_first_name("");
+		set_age(0);		
+	}
+
 	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
@@ -141,6 +148,14 @@ public:
 
 	//					Constructors:
 
+	Student() :Human()
+	{
+		set_speciality("");
+		set_group("");
+		set_rating(0);
+		set_attendance(0);
+	}
+
 	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
@@ -181,20 +196,24 @@ public:
 		os << attendance;
 		return os;
 	}
-	/*ifstream& scan(ifstream& is)
+	ifstream& scan(ifstream& is)
 	{
 		Human::scan(is);		
-		is << speciality;		
-		is << group;		
-		is << rating;		
-		is << attendance;
+		is >> speciality; 
+		is >> group;
+		is >> rating;
+		is >> attendance;
 		return is;
-	}*/
+	}
 };
 std::ostream& operator<<(std::ostream& os, const Student& obj)
 {
 	os << (Human)obj;
 	return obj.print(os);
+}
+ifstream& operator>>(ifstream& is, Student& obj)
+{
+	return obj.scan(is);
 }
 
 #define TEACHER_TAKE_PARAMETERS const std::string& speciality, unsigned int experience
@@ -222,6 +241,12 @@ public:
 		this->experience = experience;
 	}
 	//				Constructor
+
+	Teacher() :Human()
+	{
+		set_speciality("");
+		set_experience(0);		
+	}
 	Teacher(HUMAN_TAKE_PARAMETERS, TEACHER_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
@@ -261,6 +286,15 @@ public:
 	}
 
 };
+//std::ostream& operator<<(std::ostream& os, const Teacher& obj)
+//{
+//	os << (Human)obj;
+//	return obj.print(os);
+//}
+//ifstream& operator>>(ifstream& is, Teacher& obj)
+//{
+//	return obj.scan(is);
+//}
 
 class Graduate :public Student
 {
@@ -275,6 +309,11 @@ public:
 		this->subject = subject;
 	}
 	//						Constructors:
+
+	Graduate():Student()
+	{
+		set_subject("");		
+	}
 	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject)
 		:Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
@@ -309,12 +348,21 @@ public:
 	}
 
 };
+//std::ostream& operator<<(std::ostream& os, const Graduate& obj)
+//{
+//	os << (Human)obj;
+//	return obj.print(os);
+//}
+//ifstream& operator>>(ifstream& is, Graduate& obj)
+//{
+//	return obj.scan(is);
+//}
 
 Human* HumanFactory(const string& type)
 {
-	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
-	if (type.find("Graduate") != std::string::npos)return new Graduate("", "", 0, "", 0, 0);
-	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", 0, 0);
+	if (type.find("Teacher") != std::string::npos) return new Teacher();
+	if (type.find("Graduate") != std::string::npos) return new Graduate();
+	if (type.find("Student") != std::string::npos) return new Student();
 }
 
 //#define INHERITANCE_CHECK
@@ -403,14 +451,12 @@ void main()
 
 #ifdef READ_FROM_FILE
 		Human** group = nullptr;
-		int n = 0;	//Размер массива
+		int n = 0;	
 
 		ifstream fin("file.txt");
 
 		if (fin.is_open())
-		{
-			//cout << fin.tellg() << endl;
-			//1) Определяем количество записей в файле, для того, чтобы выделить память под сотрудников
+		{			
 			string Human_type;
 			for (; !fin.eof(); n++)
 			{
@@ -418,18 +464,18 @@ void main()
 			}
 			n--;
 			cout << n << endl;
-			//2) Выделяем память под массив:
+			
 			group = new Human * [n] {};
-			//3) Возвращаем курсор в начало файла:
+			
 			cout << fin.tellg() << endl;
-			fin.clear();	//Очищаем поток
-			fin.seekg(0);	//Задаем расположение курсора
+			fin.clear();	
+			fin.seekg(0);	
 			cout << fin.tellg() << endl;
 
-			//4) Загружаем данные из файла в массив:
+			
 			for (int i = 0; i < n; i++)
 			{
-				getline(fin, Human_type, ':');
+				std::getline(fin, Human_type, ':');
 				group[i] = HumanFactory(Human_type);
 				fin >> *group[i];
 			}
