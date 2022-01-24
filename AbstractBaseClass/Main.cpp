@@ -1,12 +1,12 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 
 class Vehicle
 {
 	int speed;
 public:
-	virtual void move() = 0;//Чисто виртуальный метод.
-	//Именно этот метод и делает класс абстрактным.
+	virtual void move() = 0;//Р§РёСЃС‚Рѕ РІРёСЂС‚СѓР°Р»СЊРЅС‹Р№ РјРµС‚РѕРґ.
+	//РРјРµРЅРЅРѕ СЌС‚РѕС‚ РјРµС‚РѕРґ Рё РґРµР»Р°РµС‚ РєР»Р°СЃСЃ Р°Р±СЃС‚СЂР°РєС‚РЅС‹Рј.
 };
 
 class GroundVehicle : public Vehicle {};
@@ -19,7 +19,7 @@ class Car :public GroundVehicle
 public:
 	void move()
 	{
-		cout << "Машина едит на 4-х колесах" << endl;
+		cout << "РњР°С€РёРЅР° РµРґРёС‚ РЅР° 4-С… РєРѕР»РµСЃР°С…" << endl;
 	}
 };
 class Bike :public GroundVehicle
@@ -27,7 +27,7 @@ class Bike :public GroundVehicle
 public:
 	void move()
 	{
-		cout << "Мотоцикл едит на 2-х колесах" << endl;
+		cout << "РњРѕС‚РѕС†РёРєР» РµРґРёС‚ РЅР° 2-С… РєРѕР»РµСЃР°С…" << endl;
 	}
 };
 // ------------------- WaterVehicle -------------------------
@@ -36,7 +36,7 @@ class Yacht : public WaterVehicle
 public:
 	void move()
 	{
-		cout << "Яхта плывет под парусами" << endl;
+		cout << "РЇС…С‚Р° РїР»С‹РІРµС‚ РїРѕРґ РїР°СЂСѓСЃР°РјРё" << endl;
 	}
 };
 class Boat : public WaterVehicle
@@ -44,7 +44,7 @@ class Boat : public WaterVehicle
   public:
 	void move()
 	{
-		cout << "Катер плывет при помощи ДВС и винтов" << endl;
+		cout << "РљР°С‚РµСЂ РїР»С‹РІРµС‚ РїСЂРё РїРѕРјРѕС‰Рё Р”Р’РЎ Рё РІРёРЅС‚РѕРІ" << endl;
 	}
 };
 
@@ -55,7 +55,7 @@ class Helicopter : public FlyVehicle
 public:
 	void move()
 	{
-		cout << "Вертолет летит при помощи лопастей пропеллера" << endl;
+		cout << "Р’РµСЂС‚РѕР»РµС‚ Р»РµС‚РёС‚ РїСЂРё РїРѕРјРѕС‰Рё Р»РѕРїР°СЃС‚РµР№ РїСЂРѕРїРµР»Р»РµСЂР°" << endl;
 	}
 };
 class Airplain : public FlyVehicle
@@ -63,7 +63,7 @@ class Airplain : public FlyVehicle
 public:
 	void move()
 	{
-		cout << "Самолет летит при помощи реактивных двигателей" << endl;
+		cout << "РЎР°РјРѕР»РµС‚ Р»РµС‚РёС‚ РїСЂРё РїРѕРјРѕС‰Рё СЂРµР°РєС‚РёРІРЅС‹С… РґРІРёРіР°С‚РµР»РµР№" << endl;
 	}
 };
 
@@ -73,7 +73,7 @@ int main()
 	//Vehicle v;		//Abstract
 	//GroundVehicle gv;	//Abstract
 
-	Car bmw;	//Неявный конструктор по умолчанию.
+	Car bmw;	//РќРµСЏРІРЅС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
 	bmw.move();
 	Bike harley_devidson;
 	harley_devidson.move();
@@ -86,5 +86,5 @@ int main()
 	return 0;
 }
 
-//В иерархию транспортных средств добавить Катер, Яхту, Самолет и вертолет,
-//и построить диаграмму классов;
+//Р’ РёРµСЂР°СЂС…РёСЋ С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ РґРѕР±Р°РІРёС‚СЊ РљР°С‚РµСЂ, РЇС…С‚Сѓ, РЎР°РјРѕР»РµС‚ Рё РІРµСЂС‚РѕР»РµС‚,
+//Рё РїРѕСЃС‚СЂРѕРёС‚СЊ РґРёР°РіСЂР°РјРјСѓ РєР»Р°СЃСЃРѕРІ;
