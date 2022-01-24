@@ -463,6 +463,7 @@ void main()
 				group[i] = HumanFactory(Human_type);
 				fin >> *group[i];
 			}
+			fin.close();
 		}
 		else
 		{
@@ -479,7 +480,7 @@ void main()
 			delete group[i];
 		}
 		delete[] group;
-		fin.close();
+		
 #endif // READ_FROM_FILE
 
 
