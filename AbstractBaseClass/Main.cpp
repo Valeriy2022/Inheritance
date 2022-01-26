@@ -11,7 +11,7 @@ public:
 
 class GroundVehicle : public Vehicle {};
 class WaterVehicle : public Vehicle {};
-class FlyVehicle: public Vehicle {};
+class FlyVehicle : public Vehicle {};
 
 //------------------- GroundVehicle -------------------------
 class Car :public GroundVehicle
@@ -41,7 +41,7 @@ public:
 };
 class Boat : public WaterVehicle
 {
-  public:
+public:
 	void move()
 	{
 		cout << "Катер плывет при помощи ДВС и винтов" << endl;
